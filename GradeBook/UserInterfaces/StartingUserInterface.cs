@@ -1,5 +1,7 @@
 ﻿using GradeBook.GradeBooks;
 using System;
+using System.Data;
+using System.Net.Http.Headers;
 
 namespace GradeBook.UserInterfaces
 {
@@ -34,15 +36,33 @@ namespace GradeBook.UserInterfaces
         public static void CreateCommand(string command)
         {
             var parts = command.Split(' ');
-            if (parts.Length != 2)
+            if (parts.Length != 4)
             {
-                Console.WriteLine("Command not valid, Create requires a name.");
+                Console.WriteLine("Command not valid, Create requires a name and type of gradebook.");
                 return;
             }
-            var name = parts[1];
-            BaseGradeBook gradeBook = new BaseGradeBook(name);
-            Console.WriteLine("Created gradebook {0}.", name);
-            GradeBookUserInterface.CommandLoop(gradeBook);
+            var name = parts[2];
+            bool isWeighted = bool.Parse(parts[3]);
+            if (parts[2].Equals("standard", StringComparison.InvariantCultureIgnoreCase))
+            {
+                 new StandardGradeBook(name, isWeighted);
+            }
+            else if (parts[2].Equals("ranked", StringComparison.InvariantCultureIgnoreCase))
+            {
+                 new RankedGradeBook(name, isWeighted);
+                return;
+            }
+            else
+            {
+                Console.WriteLine("{0} is not a supported type of gradebook, please try again", parts[2]);
+                return;
+            }
+
+            //BaseGradeBook gradeBook = new BaseGradeBook(name); 
+
+            // Console.WriteLine("Created gradebook {0}.", name);
+            //GradeBookUserInterface.CommandLoop(gradeBook);
+
         }
 
         public static void LoadCommand(string command)
