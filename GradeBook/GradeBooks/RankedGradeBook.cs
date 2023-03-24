@@ -6,13 +6,14 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
+
 namespace GradeBook.GradeBooks
 {
     public class RankedGradeBook : BaseGradeBook
     {
         public RankedGradeBook(string name, bool isWeighted) : base(name, isWeighted)
         {
-
+            Type = Enums.GradeBookType.Ranked;
         }
 
         public override void CalculateStatistics()
